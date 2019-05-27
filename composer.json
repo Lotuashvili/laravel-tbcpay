@@ -1,0 +1,29 @@
+{
+    "name": "lotuashvili/laravel-tbcpay",
+    "description": "TBC Payment for Laravel",
+    "authors": [
+        {
+            "name": "Levan Lotuashvili",
+            "email": "l.lotuashvili@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "wearede/tbcpay-php": "^0.9.2",
+        "doctrine/dbal": "^2.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lotuashvili\\LaravelTbcPay\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Lotuashvili\\LaravelTbcPay\\TbcPayServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

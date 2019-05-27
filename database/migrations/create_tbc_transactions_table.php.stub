@@ -1,0 +1,43 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateTbcTransactionsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create(config('tbc.transactions_table'), function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('locale');
+            $table->integer('model_id')->unsigned()->nullable();
+            $table->string('model_type')->nullable();
+            $table->double('amount');
+            $table->string('currency');
+            $table->string('trans_id');
+            $table->boolean('is_paid')->default(0);
+            $table->string('result_code')->nullable();
+            $table->string('card_number')->nullable();
+            $table->timestamp('completed_at')->nullable();
+            $table->timestamps();
+
+            $table->index(['model_id', 'model_type', 'trans_id']);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists(config('tbc.transactions_table'));
+    }
+}
