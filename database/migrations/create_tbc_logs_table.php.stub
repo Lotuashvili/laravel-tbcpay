@@ -15,7 +15,7 @@ class CreateTbcLogsTable extends Migration
     {
         Schema::create(config('tbc.logs_table'), function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('transaction_id')->unsigned()->nullable();
+            $table->bigInteger('transaction_id')->unsigned()->nullable();
             $table->foreign('transaction_id')->references('id')->on(config('tbc.transactions_table'))->onUpdate('cascade')->onDelete('cascade');
             $table->string('message')->nullable();
             $table->json('payload')->nullable();

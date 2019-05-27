@@ -13,7 +13,7 @@ class TbcPayServiceProvider extends ServiceProvider
         ], 'config');
 
         $this->publishes([
-            __DIR__.'/../database/migrations/create_tbc_transactions_table.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_tbc_transactions_table.php'),
+            __DIR__.'/../database/migrations/create_tbc_transactions_table.php.stub' => database_path('migrations/' . date('Y_m_d_His', time() - 10) . '_create_tbc_transactions_table.php'),
             __DIR__.'/../database/migrations/create_tbc_logs_table.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_tbc_logs_table.php'),
         ], 'migrations');
 
