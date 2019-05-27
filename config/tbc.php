@@ -43,7 +43,7 @@ return [
     /*
      * Form submit url
      */
-    'form_url' => env('TBCPAY_FORM_URL', 'https://securepay.ufc.ge/ecomm2/MerchantHandler'),
+    'form_url' => env('TBCPAY_FORM_URL', 'https://securepay.ufc.ge/ecomm2/ClientHandler'),
 
     /*
      * Default currency code (ISO 4217)
