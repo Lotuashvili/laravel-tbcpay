@@ -3,6 +3,7 @@
 namespace Lotuashvili\LaravelTbcPay;
 
 use Illuminate\Database\Eloquent\Model;
+use Lotuashvili\LaravelTbcPay\Models\TbcLog;
 use Lotuashvili\LaravelTbcPay\Models\TbcTransaction;
 use WeAreDe\TbcPay\TbcPayProcessor;
 
@@ -24,6 +25,11 @@ class TbcPay
     protected $trans_id;
 
     /**
+     * @var bool
+     */
+    protected $debug = false;
+
+    /**
      * TbcPay constructor.
      * Initialize TbcPayProcessor and set merchant url
      */
@@ -31,6 +37,7 @@ class TbcPay
     {
         $this->processor = new TbcPayProcessor(config('tbc.certificate.path'), config('tbc.certificate.pass'), request()->ip());
         $this->processor->submit_url = config('tbc.merchant_url', 'https://securepay.ufc.ge:18443/ecomm2/MerchantHandler');
+        $this->debug = config('tbc.debug');
     }
 
     /**
@@ -75,16 +82,29 @@ class TbcPay
      */
     public function start(Model $model)
     {
+        if ($this->debug) {
+            TbcLog::create([
+                'message' => 'Starting transaction on model ' . get_class($model) . ' #' . $model->id,
+            ]);
+        }
+
         $start = $this->processor->sms_start_transaction();
 
         if (isset($start['error'])) {
-            // Log::error($start['error']);
+            if ($this->debug) {
+                TbcLog::create([
+                    'status' => 0,
+                    'message' => 'Starting transaction failed. ' . $start['error'],
+                    'payload' => $start,
+                ]);
+            }
+
             return false;
         } else if (isset($start['TRANSACTION_ID'])) {
             $this->start = $start;
             $this->trans_id = $start['TRANSACTION_ID'];
 
-            TbcTransaction::create([
+            $transaction = TbcTransaction::create([
                 'locale' => app()->getLocale(),
                 'amount' => $this->processor->amount / config('tbc.amount_unit', 1), // Divide to display amount in GEL instead of Tetri
                 'currency' => $this->processor->currency,
@@ -93,7 +113,13 @@ class TbcPay
                 'trans_id' => $this->trans_id,
             ]);
 
-            // Log::debug('[PAYMENT] Starting. Transaction ID: ' . $this->trans_id);
+            if ($this->debug) {
+                TbcLog::create([
+                    'transaction_id' => $transaction->id,
+                    'message' => 'Transaction started: ' . $this->trans_id,
+                    'payload' => $start,
+                ]);
+            }
         }
 
         return $this;
@@ -118,21 +144,45 @@ class TbcPay
      */
     public function isOk($trans_id = null, $rawPayload = false)
     {
-        $result = $this->processor->get_transaction_result($trans_id ?: $this->trans_id);
+        $id = $trans_id ?: $this->trans_id;
 
-        // Log::debug('[PAYMENT] OK. Transaction ID: ' . $trans_id);
-        // Log::debug('[PAYMENT] OK. Transaction Result: ' . json_encode($result));
+        if ($this->debug) {
+            TbcLog::create([
+                'message' => 'Checking status of transaction: ' . $id,
+            ]);
+        }
 
-        $transaction = TbcTransaction::where('trans_id', $trans_id)->firstOrFail();
+        $result = $this->processor->get_transaction_result($id);
+
+        $transaction = TbcTransaction::where('trans_id', $id)->firstOrFail();
+
+        if ($this->debug) {
+            TbcLog::create([
+                'transaction_id' => $transaction->id,
+                'message' => 'Transaction result: ' . $id,
+                'payload' => $result,
+            ]);
+        }
+
+        $isOk = data_get($result, 'RESULT') == 'OK';
 
         $transaction->update([
-            'is_paid' => data_get($result, 'RESULT') == 'OK',
+            'is_paid' => $isOk,
             'result_code' => data_get($result, 'RESULT_CODE'),
             'card_number' => data_get($result, 'CARD_NUMBER'),
             'completed_at' => now(),
         ]);
 
-        return $rawPayload ? $result : (data_get($result, 'RESULT') == 'OK');
+        if ($this->debug) {
+            TbcLog::create([
+                'status' => $isOk,
+                'transaction_id' => $transaction->id,
+                'message' => ($isOk ? 'Transaction marked as paid' : 'Transaction unsuccessful') . ': ' . $id,
+                'payload' => $result,
+            ]);
+        }
+
+        return $rawPayload ? $result : $isOk;
     }
 
     /**
@@ -143,7 +193,13 @@ class TbcPay
     public function close()
     {
         $result = $this->processor->close_day();
-        // Log::info('[PAYMENT] Closing day (' . json_encode($result) . ')');
+
+        if ($this->debug) {
+            TbcLog::create([
+                'message' => 'Day closed',
+                'payload' => $result,
+            ]);
+        }
 
         return $this;
     }
@@ -153,10 +209,14 @@ class TbcPay
      *
      * @return bool
      */
-    public static function fail()
+    public function fail()
     {
-        // Log::useFiles(storage_path() . '/logs/payment.log', 'error');
-        // Log::error('[PAYMENT] Fail');
+        if ($this->debug) {
+            TbcLog::create([
+                'status' => 0,
+                'message' => 'Transaction failed.',
+            ]);
+        }
 
         return true;
     }

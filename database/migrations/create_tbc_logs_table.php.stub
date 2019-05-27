@@ -17,6 +17,7 @@ class CreateTbcLogsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('transaction_id')->unsigned()->nullable();
             $table->foreign('transaction_id')->references('id')->on(config('tbc.transactions_table'))->onUpdate('cascade')->onDelete('cascade');
+            $table->boolean('status')->default(1);
             $table->string('message')->nullable();
             $table->json('payload')->nullable();
             $table->timestamps();
