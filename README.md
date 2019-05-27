@@ -33,7 +33,13 @@ php artisan vendor:publish --provider="Lotuashvili\LaravelTbcPay\TbcPayServicePr
 
 ### Generating and placing a certificate
 
-Place your certificate (.pem file) in `storage/certificates` folder. Name it whatever you want and specify the name in .env
+TBC provides SSL certificate in **.p12** format, we need to transform it to **.pem** format. Use command below:
+
+```
+openssl pkcs12 -in *.p12 -out tbcpay.pem
+```
+
+After transformation, place certificate (**.pem** file) in `storage/certificates` folder. Name it whatever you want (tbcpay.pem in this example) and specify the name and password in `.env`
 
 ### Environment
 
