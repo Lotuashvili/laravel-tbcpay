@@ -29,7 +29,7 @@ class TbcPay
      */
     public function __construct()
     {
-        $this->processor = new TbcPayProcessor(config('tbc.cert_path'), config('tbc.cert_pass'), request()->ip());
+        $this->processor = new TbcPayProcessor(config('tbc.certificate.path'), config('tbc.certificate.pass'), request()->ip());
         $this->processor->submit_url = config('tbc.merchant_url', 'https://securepay.ufc.ge:18443/ecomm2/MerchantHandler');
     }
 
