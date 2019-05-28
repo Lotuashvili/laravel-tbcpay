@@ -1,0 +1,66 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Lotuashvili\LaravelTbcPay\TbcPay;
+
+class TbcPayController extends Controller
+{
+    /**
+     * @var TbcPay
+     */
+    protected $tbc;
+
+    /**
+     * TbcPayController constructor.
+     *
+     * @param TbcPay $tbc
+     */
+    public function __construct(TbcPay $tbc)
+    {
+        $this->tbc = $tbc;
+    }
+
+    /**
+     * Success handler
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function success(Request $request)
+    {
+        // Retreive Transaction ID from request
+        $trans_id = $request->input('trans_id');
+
+        // Limit access to page without Transaction ID
+        if (empty($trans_id)) {
+            abort(404);
+        }
+
+        // Checks if transaction has been marked as paid or not
+        $isOk = $this->tbc->isOk($trans_id);
+
+        if ($isOk) {
+            // Mark things in your database as paid
+        } else {
+            // Display error message
+        }
+
+        // Default fallback
+        return redirect()->to('/');
+    }
+
+    /**
+     * Fail handler
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function fail()
+    {
+        $this->tbc->fail();
+
+        // Default fallback
+        return redirect()->to('/');
+    }
+}

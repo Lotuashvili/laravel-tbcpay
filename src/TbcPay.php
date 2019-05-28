@@ -4,6 +4,7 @@ namespace Lotuashvili\LaravelTbcPay;
 
 use BadMethodCallException;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Route;
 use Lotuashvili\LaravelTbcPay\Models\TbcLog;
 use Lotuashvili\LaravelTbcPay\Models\TbcTransaction;
 use WeAreDe\TbcPay\TbcPayProcessor;
@@ -271,6 +272,19 @@ class TbcPay
         }
 
         return true;
+    }
+
+    /**
+     * Define routes for TBCPay
+     *
+     * @param string $controller
+     * @param string $successMethod
+     * @param string $failMethod
+     */
+    public static function routes(string $controller = 'TbcPayController', string $successMethod = 'success', string $failMethod = 'fail')
+    {
+        Route::post('tbcpay/success', $controller . '@' . $successMethod)->name('tbcpay.success');
+        Route::post('tbcpay/fail', $controller . '@' . $failMethod)->name('tbcpay.fail');
     }
 
     /**
