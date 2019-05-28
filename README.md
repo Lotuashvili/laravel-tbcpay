@@ -1,8 +1,8 @@
 # Laravel TbcPay
 
-[![Latest Stable Version](https://img.shields.io/packagist/v/Lotuashvili/laravel-tbcpay.svg)](https://packagist.org/packages/lotuashvili/laravel-tbcpay)
-[![Total Downloads](https://img.shields.io/packagist/dt/Lotuashvili/laravel-tbcpay.svg)](https://packagist.org/packages/lotuashvili/laravel-tbcpay)
-[![Downloads Month](https://img.shields.io/packagist/dm/Lotuashvili/laravel-tbcpay.svg)](https://packagist.org/packages/lotuashvili/laravel-tbcpay)
+[![Latest Stable Version](https://img.shields.io/packagist/v/lotuashvili/laravel-tbcpay.svg)](https://packagist.org/packages/lotuashvili/laravel-tbcpay)
+[![Total Downloads](https://img.shields.io/packagist/dt/lotuashvili/laravel-tbcpay.svg)](https://packagist.org/packages/lotuashvili/laravel-tbcpay)
+[![Downloads Month](https://img.shields.io/packagist/dm/lotuashvili/laravel-tbcpay.svg)](https://packagist.org/packages/lotuashvili/laravel-tbcpay)
 
 This package allows you to use TBC payments in your Laravel application.
 
