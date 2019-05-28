@@ -36,6 +36,12 @@ Then run:
 php artisan vendor:publish --provider="Lotuashvili\LaravelTbcPay\TbcPayServiceProvider"
 ```
 
+And run migrations:
+
+```
+php artisan migrate
+```
+
 ## Transaction types (SMS / DMS)
 
 There are two types of transaction within this system: **SMS** and **DMS**.
