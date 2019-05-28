@@ -107,6 +107,32 @@ Simply enable debug from `.env` by setting `TBCPAY_DEBUG=true`, all logs will be
 
 All transactions will be available in `tbc_transactions` table by default. You can access them with `Lotuashvili\LaravelTbcPay\Models\TbcTransaction` model.
 
+## Usage
+
+### Closing day with cron
+
+If you don't have cron jobs running in your application, please check out [Laravel's documentation](https://laravel.com/docs/5.8/scheduling).
+
+Register command in your `app/Console/Kernel.php`.
+
+```php
+protected $commands = [
+    // Other commands
+    \Lotuashvili\LaravelTbcPay\Commands\CloseDay::class,
+];
+```
+
+Then add command to schedule (for example use `everyday()`, it will run command everyday at 00:00).
+
+```php
+protected function schedule(Schedule $schedule)
+{
+    // Other commands
+    $schedule->command('tbcpay:close-day')
+             ->everyday();
+}
+```
+
 ## Credits
 
 - [Levan Lotuashvili](https://github.com/lotuashvili)
