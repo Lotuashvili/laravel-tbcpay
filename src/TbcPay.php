@@ -110,16 +110,16 @@ class TbcPay
     /**
      * Start a transaction based on type
      *
-     * @param Model $model
+     * @param Model|null $model
      * @return $this|bool
      */
-    public function start(Model $model)
+    public function start(Model $model = null)
     {
         $type = $this->type;
 
         if ($this->debug) {
             TbcLog::create([
-                'message' => "Starting $type transaction on model " . get_class($model) . ' #' . $model->id,
+                'message' => "Starting $type transaction" . ($model ? "on model " . get_class($model) . ' #' . $model->id : ''),
             ]);
         }
 
@@ -146,8 +146,8 @@ class TbcPay
                 'amount' => $this->processor->amount / config('tbc.amount_unit', 1), // Divide to display amount in GEL instead of Tetri
                 'type' => $type,
                 'currency' => $this->processor->currency,
-                'model_id' => data_get($model, 'id'),
-                'model_type' => get_class($model),
+                'model_id' => $model ? data_get($model, 'id') : null,
+                'model_type' => $model ? get_class($model) : null,
                 'trans_id' => $this->trans_id,
             ]);
 
