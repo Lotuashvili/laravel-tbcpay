@@ -55,11 +55,12 @@ class TbcPay
      *
      * @param float $amount
      * @param int|null $currency
+     * @param string|null $biller
      * @param string|null $message
      * @param string|null $lang
      * @return $this
      */
-    public function init(float $amount = 1, int $currency = null, string $message = null, string $lang = null)
+    public function init(float $amount = 1, int $currency = null, string $biller = null, string $message = null, string $lang = null)
     {
         $lang = strtoupper($lang ?: app()->getLocale());
 
@@ -69,6 +70,7 @@ class TbcPay
         $this->processor->amount = $amount * config('tbc.amount_unit', 1);
         $this->processor->currency = $currency ?: config('tbc.default_currency_code');
         $this->processor->description = $message ?: config('tbc.default_message');
+        $this->processor->biller = $biller;
         $this->processor->language = $language;
 
         return $this;
