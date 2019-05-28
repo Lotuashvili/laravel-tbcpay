@@ -17,6 +17,9 @@ This package allows you to use TBC payments in your Laravel application.
     - [Merchant URLs](#merchant-urls)
     - [Debug](#debug)
 - [Usage](#usage)
+    - [Routes and Controller](#setting-up-routes-and-controller)
+    - [Payment](#payment)
+    - [Other methods](#using-other-methods)
     - [Closing day with cron](#closing-day-with-cron)
 - [Transactions History](#transactions-history)
 - [Credits](#credits)
@@ -113,6 +116,64 @@ Set `TBCPAY_MERCHANT_URL` and `TBCPAY_FORM_URL` in `.env` or `merchant_url` and 
 Simply enable debug from `.env` by setting `TBCPAY_DEBUG=true`, all logs will be in `tbc_logs` table by default. You can access them with `Lotuashvili\LaravelTbcPay\Models\TbcLog` model.
 
 ## Usage
+
+### Setting up routes and controller
+
+After publishing files, `app/Http/Controllers/TbcPayController` will be created. Feel free to modify controller as you want.
+
+Open `routes/web.php` and define routes (Remove variables to use default values).
+
+```php
+<?php
+
+use Lotuashvili\LaravelTbcPay\TbcPay;
+
+// Other routes
+
+TbcPay::routes(
+    $controller, // Default: 'TbcPayController'
+    $successMethod, // Default: 'success'
+    $failMethod // Default: 'fail'
+);
+```
+
+### Payment
+
+In your controller, inject `\Lotuashvili\LaravelTbcPay\TbcPay` class to use payments.
+
+```php
+<?php
+
+class PaymentController
+{
+    // Other methods
+    
+    public function pay(\Lotuashvili\LaravelTbcPay\TbcPay $tbcPay)
+    {
+        // OPTIONAL: Load model and start transaction by model
+        // Model relation will be used in tbc_transcations table
+        $model = User::first();
+
+        return $tbcPay->init(
+            100, // Amount
+            981, // Currency (Optional)
+            'Biller name', // Name of biller (Optional)
+            'Website payment', // Message to be displayed on a payment page (Optional)
+            'ge' // Language of the payment page (Optional)
+        )->start($model) // Model parameter is optional
+         ->sms() // Optional: Specify transaction type (Supported: sms and dms)
+         ->view(); // Return final view of TBC payment to redirect to a payment page
+    }
+}
+```
+
+After returning view, website will be redirected to the payment page. After filling card details, you will be redirected to the success or fail url, that you've specified previously to TBC.
+
+### Using other methods
+
+If you have started DMS authorization (blocked money on account), then you have to actually bill blocked amount after some period of time. You will need `makeDms()` function for that.
+
+You can directly access core processor's methods by calling for example `$tbcPay->reverse_transaction()` (Using magic __call function). For all methods, please check [PlugAndPay TBC Processor's documentation](https://github.com/plugandpay/tbc-credit-card-payment-gateway-php-lib)
 
 ### Closing day with cron
 
