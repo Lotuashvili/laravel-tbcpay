@@ -5,10 +5,12 @@ This package allows you to use TBC payments in your Laravel application.
 ## Table of Contents
 
 - [Installation](#installation)
+- [Transaction types](#transaction-types-sms--dms)
 - [Generating and placing a certificate](#generating-and-placing-a-certificate)
 - [Environment](#environment)
 - [Configuration](#configuration)
 - [Transactions History](#transactions-history)
+- [Credits](#credits)
 
 ## Installation
 
@@ -33,6 +35,15 @@ Then run:
 ```
 php artisan vendor:publish --provider="Lotuashvili\LaravelTbcPay\TbcPayServiceProvider"
 ```
+
+## Transaction types (SMS / DMS)
+
+There are two types of transaction within this system: **SMS** and **DMS**.
+
+SMS - is a direct payment method, money is charged in 1 event, as soon as customer enters the credit card details and clicks proceed.  
+DMS - is a two step method, first event blocks the money on the card (max 30 days), second event captures the money (second event can be carried out when product is shipped to the customer for example).
+
+Every 24 hours, a merchant must close the business day.
 
 ## Generating and placing a certificate
 
@@ -89,3 +100,9 @@ Simply enable debug from `.env` by setting `TBCPAY_DEBUG=true`, all logs will be
 ## Transactions history
 
 All transactions will be available in `tbc_transactions` table by default. You can access them with `Lotuashvili\LaravelTbcPay\Models\TbcTransaction` model.
+
+## Credits
+
+- [Levan Lotuashvili](https://github.com/lotuashvili)
+- [Sandro Dzneladze - Plug and Pay](https://github.com/plugandpay)
+- [All Contributors](../../contributors)
