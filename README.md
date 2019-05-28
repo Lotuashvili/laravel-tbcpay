@@ -9,7 +9,11 @@ This package allows you to use TBC payments in your Laravel application.
 - [Generating and placing a certificate](#generating-and-placing-a-certificate)
 - [Environment](#environment)
 - [Configuration](#configuration)
+    - [Amount Unit](#amount-unit)
+    - [Merchant URLs](#merchant-urls)
+    - [Debug](#debug)
 - [Usage](#usage)
+    - [Closing day with cron](#closing-day-with-cron)
 - [Transactions History](#transactions-history)
 - [Credits](#credits)
 
