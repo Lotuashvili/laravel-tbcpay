@@ -13,6 +13,7 @@ class TbcTransaction extends Model
         'locale',
         'model_id',
         'model_type',
+        'type',
         'amount',
         'currency',
         'trans_id',

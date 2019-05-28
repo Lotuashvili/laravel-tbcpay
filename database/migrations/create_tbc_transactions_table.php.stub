@@ -18,6 +18,7 @@ class CreateTbcTransactionsTable extends Migration
             $table->string('locale');
             $table->integer('model_id')->unsigned()->nullable();
             $table->string('model_type')->nullable();
+            $table->string('type');
             $table->double('amount');
             $table->string('currency');
             $table->string('trans_id');

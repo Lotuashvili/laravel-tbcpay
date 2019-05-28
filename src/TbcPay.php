@@ -31,6 +31,11 @@ class TbcPay
     protected $debug = false;
 
     /**
+     * @var string Transaction Type
+     */
+    protected $type = 'SMS';
+
+    /**
      * TbcPay constructor.
      * Initialize TbcPayProcessor and set merchant url
      */
@@ -78,26 +83,54 @@ class TbcPay
     }
 
     /**
-     * Start a SMS transaction
+     * Set transaction type to SMS
+     *
+     * @return $this
+     */
+    public function sms()
+    {
+        $this->type = 'SMS';
+
+        return $this;
+    }
+
+    /**
+     * Set transaction type to DMS
+     *
+     * @return $this
+     */
+    public function dms()
+    {
+        $this->type = 'DMS';
+
+        return $this;
+    }
+
+    /**
+     * Start a transaction based on type
      *
      * @param Model $model
      * @return $this|bool
      */
     public function start(Model $model)
     {
+        $type = $this->type;
+
         if ($this->debug) {
             TbcLog::create([
-                'message' => 'Starting transaction on model ' . get_class($model) . ' #' . $model->id,
+                'message' => "Starting $type transaction on model " . get_class($model) . ' #' . $model->id,
             ]);
         }
 
-        $start = $this->processor->sms_start_transaction();
+        $method = $type === 'SMS' ? 'sms_start_transaction' : 'dms_start_authorization';
+
+        $start = $this->processor->$method();
 
         if (isset($start['error'])) {
             if ($this->debug) {
                 TbcLog::create([
                     'status' => 0,
-                    'message' => 'Starting transaction failed. ' . $start['error'],
+                    'message' => "Starting $type transaction failed. " . $start['error'],
                     'payload' => $start,
                 ]);
             }
@@ -110,6 +143,7 @@ class TbcPay
             $transaction = TbcTransaction::create([
                 'locale' => app()->getLocale(),
                 'amount' => $this->processor->amount / config('tbc.amount_unit', 1), // Divide to display amount in GEL instead of Tetri
+                'type' => $type,
                 'currency' => $this->processor->currency,
                 'model_id' => data_get($model, 'id'),
                 'model_type' => get_class($model),
@@ -119,13 +153,28 @@ class TbcPay
             if ($this->debug) {
                 TbcLog::create([
                     'transaction_id' => $transaction->id,
-                    'message' => 'Transaction started: ' . $this->trans_id,
+                    'message' => $type . ' transaction started: ' . $this->trans_id,
                     'payload' => $start,
                 ]);
             }
         }
 
         return $this;
+    }
+
+    /**
+     * Make DMS transaction
+     * Charge user after blocking amount
+     *
+     * @param string $trans_id
+     * @param bool $rawPayload
+     * @return array|bool
+     */
+    public function makeDms(string $trans_id, bool $rawPayload = false)
+    {
+        $this->processor->dms_make_transaction($trans_id);
+
+        return $this->isOk($trans_id, $rawPayload);
     }
 
     /**
@@ -141,11 +190,11 @@ class TbcPay
     /**
      * Check if transaction is completed and update status in database
      *
-     * @param null $trans_id
+     * @param string $trans_id
      * @param bool $rawPayload
      * @return array|bool
      */
-    public function isOk($trans_id = null, $rawPayload = false)
+    public function isOk(string $trans_id = null, bool $rawPayload = false)
     {
         $id = $trans_id ?: $this->trans_id;
 
