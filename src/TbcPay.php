@@ -2,6 +2,7 @@
 
 namespace Lotuashvili\LaravelTbcPay;
 
+use BadMethodCallException;
 use Illuminate\Database\Eloquent\Model;
 use Lotuashvili\LaravelTbcPay\Models\TbcLog;
 use Lotuashvili\LaravelTbcPay\Models\TbcTransaction;
@@ -12,7 +13,7 @@ class TbcPay
     /**
      * @var TbcPayProcessor
      */
-    public $processor;
+    protected $processor;
 
     /**
      * @var array
@@ -221,5 +222,21 @@ class TbcPay
         }
 
         return true;
+    }
+
+    /**
+     * Use TbcPayProcessor's native functions directly with magic function
+     *
+     * @param $name
+     * @param $arguments
+     * @return mixed
+     */
+    public function __call($name, $arguments)
+    {
+        if (method_exists($this->processor, $name)) {
+            return $this->processor->$name($arguments);
+        }
+
+        throw new BadMethodCallException("Method [{$name}] does not exist");
     }
 }
