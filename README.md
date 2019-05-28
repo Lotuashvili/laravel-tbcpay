@@ -9,6 +9,7 @@ This package allows you to use TBC payments in your Laravel application.
 - [Generating and placing a certificate](#generating-and-placing-a-certificate)
 - [Environment](#environment)
 - [Configuration](#configuration)
+- [Usage](#usage)
 - [Transactions History](#transactions-history)
 - [Credits](#credits)
 
@@ -103,10 +104,6 @@ Set `TBCPAY_MERCHANT_URL` and `TBCPAY_FORM_URL` in `.env` or `merchant_url` and 
 
 Simply enable debug from `.env` by setting `TBCPAY_DEBUG=true`, all logs will be in `tbc_logs` table by default. You can access them with `Lotuashvili\LaravelTbcPay\Models\TbcLog` model.
 
-## Transactions history
-
-All transactions will be available in `tbc_transactions` table by default. You can access them with `Lotuashvili\LaravelTbcPay\Models\TbcTransaction` model.
-
 ## Usage
 
 ### Closing day with cron
@@ -132,6 +129,10 @@ protected function schedule(Schedule $schedule)
              ->everyday();
 }
 ```
+
+## Transactions history
+
+All transactions will be available in `tbc_transactions` table by default. You can access them with `Lotuashvili\LaravelTbcPay\Models\TbcTransaction` model.
 
 ## Credits
 
