@@ -151,7 +151,7 @@ class PaymentController
     public function pay(\Lotuashvili\LaravelTbcPay\TbcPay $tbcPay)
     {
         // OPTIONAL: Load model and start transaction by model
-        // Model relation will be used in tbc_transcations table
+        // Model relation will be used in tbc_transactions table
         $model = User::first();
 
         return $tbcPay->init(
