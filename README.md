@@ -137,6 +137,12 @@ TbcPay::routes(
 );
 ```
 
+Send success and fail URLs to TBC:
+
+Success: `http://website.ge/tbcpay/success`
+
+Fail: `http://website.ge/tbcpay/fail`
+
 ### Payment
 
 In your controller, inject `\Lotuashvili\LaravelTbcPay\TbcPay` class to use payments.
