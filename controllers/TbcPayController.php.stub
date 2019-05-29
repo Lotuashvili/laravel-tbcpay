@@ -19,6 +19,8 @@ class TbcPayController extends Controller
      */
     public function __construct(TbcPay $tbc)
     {
+        parent::__construct();
+
         $this->tbc = $tbc;
     }
 
