@@ -12,6 +12,11 @@ use WeAreDe\TbcPay\TbcPayProcessor;
 class TbcPay
 {
     /**
+     * @var string Transaction ID
+     */
+    public $trans_id;
+
+    /**
      * @var TbcPayProcessor
      */
     protected $processor;
@@ -20,11 +25,6 @@ class TbcPay
      * @var array
      */
     protected $start;
-
-    /**
-     * @var string Transaction ID
-     */
-    protected $trans_id;
 
     /**
      * @var bool
