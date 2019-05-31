@@ -138,6 +138,23 @@ TbcPay::routes(
 );
 ```
 
+**NOTE:** Exclude `tbcpay/*` routes from CSRF Token verification to avoid `TokenMismatchException` on success/fail URLs.
+
+Add urls in your `app/Http/Middleware/VerifyCsrtToken.php`:
+
+```php
+<?php
+
+class VerifyCsrfToken extends Middleware
+{
+    // Other variables
+
+    protected $except = [
+        'tbcpay/*',
+    ];
+}
+```
+
 Send success and fail URLs to TBC:
 
 Success: `http://website.ge/tbcpay/success`
