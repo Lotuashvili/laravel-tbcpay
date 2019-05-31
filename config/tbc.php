@@ -37,13 +37,19 @@ return [
 
     /*
      * TBC's merchant url
+     *
+     * New version: https://ecommerce.ufc.ge:18443/ecomm2/MerchantHandler
+     * Old version: https://securepay.ufc.ge:18443/ecomm2/MerchantHandler
      */
-    'merchant_url' => env('TBCPAY_MERCHANT_URL', 'https://securepay.ufc.ge:18443/ecomm2/MerchantHandler'),
+    'merchant_url' => env('TBCPAY_MERCHANT_URL', 'https://ecommerce.ufc.ge:18443/ecomm2/MerchantHandler'),
 
     /*
      * Form submit url
+     *
+     * New version: https://ecommerce.ufc.ge/ecomm2/ClientHandler
+     * Old version: https://securepay.ufc.ge/ecomm2/ClientHandler
      */
-    'form_url' => env('TBCPAY_FORM_URL', 'https://securepay.ufc.ge/ecomm2/ClientHandler'),
+    'form_url' => env('TBCPAY_FORM_URL', 'https://ecommerce.ufc.ge/ecomm2/ClientHandler'),
 
     /*
      * Default currency code (ISO 4217)

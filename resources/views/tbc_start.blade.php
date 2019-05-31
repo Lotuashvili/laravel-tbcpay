@@ -18,7 +18,7 @@
     @elseif (isset($start['TRANSACTION_ID']))
 
         <body onLoad="javascript:redirect()">
-            <form name="returnform" action="{{ config('tbc.form_url', 'https://securepay.ufc.ge/ecomm2/ClientHandler') }}" method="POST">
+            <form name="returnform" action="{{ config('tbc.form_url', 'https://ecommerce.ufc.ge/ecomm2/ClientHandler') }}" method="POST">
                 <input type="hidden" name="trans_id" value="{{ $start['TRANSACTION_ID'] }}">
 
                 <noscript>
