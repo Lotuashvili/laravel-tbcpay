@@ -25,7 +25,7 @@ return [
      * Lari (GEL) = 100
      * Tetri = 1
      */
-    'amount_unit' => env('TBCPAY_AMOUNT_UNIT', 1),
+    'amount_unit' => env('TBCPAY_AMOUNT_UNIT', 100),
 
     /*
      * Certificate path and passphrase

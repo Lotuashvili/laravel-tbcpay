@@ -99,11 +99,11 @@ TBCPAY_DEFAULT_CURRENCY=981
 
 You can change default amount unit from configuration or `.env` file. Amount unit is used to multiply final amount before sending request to TBC. TBC bank requires amount in Cents (or Tetri) instead of USD (or GEL).
 
-By default, unit is set to 1, so you can pass amount in GEL, for example `$amount = 300` will redirect to the checkout page with `300GEL` amount.
+By default, unit is set to 100, so you can pass amount in GEL, for example `$amount = 300` will redirect to the checkout page with `300GEL` amount.
 
-If you set unit to `100`, then you will be redirected to the checkout page with `3GEL` amount.
+If you set unit to `1`, then you will be redirected to the checkout page with `3GEL` amount.
 
-To change amount unit, set `TBCPAY_AMOUNT_UNIT=100` in `.env` file or change `amount_unit` directly in `config/tbc.php`.
+To change amount unit, set `TBCPAY_AMOUNT_UNIT=1` in `.env` file or change `amount_unit` directly in `config/tbc.php`.
 
 #### Merchant URLs
 
