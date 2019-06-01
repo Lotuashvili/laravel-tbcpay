@@ -229,7 +229,7 @@ protected function schedule(Schedule $schedule)
 
 All transactions will be available in `tbc_transactions` table by default. You can access them with `Lotuashvili\LaravelTbcPay\Models\TbcTransaction` model.
 
-If you have enabled `debug`, then all records with be available in `tbc_logs` table and can access them with `Lotuashvili\LaravelTbcPay\Models\TbcLog` model.
+If you have enabled `debug`, then all records will be available in `tbc_logs` table and can access them with `Lotuashvili\LaravelTbcPay\Models\TbcLog` model.
 
 ## Result Codes
 
