@@ -79,6 +79,8 @@ TBCPAY_CERTIFICATE_NAME=tbcpay.pem
 TBCPAY_CERTIFICATE_PASS=YourPassword123
 ```
 
+After that, add `storage/certificates` folder in to your `.gitignore`.
+
 ## Environment
 
 Set your environment variables:
