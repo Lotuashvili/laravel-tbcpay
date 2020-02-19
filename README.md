@@ -214,14 +214,14 @@ protected $commands = [
 ];
 ```
 
-Then add command to schedule (for example use `everyday()`, it will run command everyday at 00:00).
+Then add command to schedule (for example use `daily()`, it will run command everyday at 00:00).
 
 ```php
 protected function schedule(Schedule $schedule)
 {
     // Other commands
     $schedule->command('tbcpay:close-day')
-             ->everyday();
+             ->daily();
 }
 ```
 
