@@ -207,7 +207,7 @@ class TbcPay
 
         $result = $this->processor->get_transaction_result($id);
 
-        $transaction = TbcTransaction::where('trans_id', $id)->firstOrFail();
+        $transaction = TbcTransaction::where('trans_id', $id)->whereNull('completed_at')->firstOrFail();
 
         if ($this->debug) {
             TbcLog::create([
