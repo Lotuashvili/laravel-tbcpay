@@ -6,6 +6,8 @@
 
 This package allows you to use TBC payments in your Laravel application.
 
+![Laravel TbcPay](cover.png)
+
 ## Table of Contents
 
 - [Installation](#installation)
